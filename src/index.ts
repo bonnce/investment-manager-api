@@ -1,5 +1,5 @@
 import express from 'express'
-import currency from './routes/currency'
+import investements from './routes/investments'
 import currencies from './routes/currencies'
 
 const app = express()
@@ -13,7 +13,7 @@ app.get('/', (_, res) => {
 })
 
 app.use('/api/currencies', currencies)
-app.use('/api/currency', currency)
+app.use('/api/investements', investements)
 
 app.listen(PORT, () => {
   console.log(`hello ${PORT}`)
