@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Ethereum",
+    "shortName": "eth",
+    "shopping": [
+      1
+    ],
+    "id": 1
+  },
+  {
+    "name": "Bitcoin",
+    "shortName": "btc",
+    "shopping": [
+      2
+    ],
+    "id": 2
+  }
+]

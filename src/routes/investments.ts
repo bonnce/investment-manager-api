@@ -1,9 +1,11 @@
 import express from 'express'
+import * as investmentsServices from '../services/investments'
 
 const router = express.Router()
 
 router.get('/', (_, res) => {
-  res.send('get all investements')
+  const investements = investmentsServices.getAllInvestments()
+  res.send(investements)
 })
 
 router.post('/', (_, res) => {

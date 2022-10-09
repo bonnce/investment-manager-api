@@ -1,0 +1,14 @@
+[
+  {
+    "cost": 2345,
+    "bought": 0.005,
+    "currency": 1,
+    "id": 1
+  },
+  {
+    "cost": 34534,
+    "bought": 0.005,
+    "currency": 2,
+    "id": 2
+  }
+]
