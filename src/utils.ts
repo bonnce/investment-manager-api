@@ -1,4 +1,4 @@
-import { currencyEntry } from './types'
+import { currencyEntry, investmentEntry } from './types'
 
 const isString = (str: string): boolean => typeof str === 'string'
 
@@ -21,6 +21,11 @@ const validShopping = (shopping: any): number[] => {
   throw new Error('Invalid type on shopping, must be array of numbers!')
 }
 
+const validFieldNumber = (field: any, fieldName: string): number => {
+  if (isNumber(field)) return field
+  throw new Error(`Invalid type on ${fieldName}, must be number!`)
+}
+
 const validateCurrencyEntry = (body: any): currencyEntry => {
   const validEntry: currencyEntry = {
     name: validName(body.name),
@@ -30,4 +35,17 @@ const validateCurrencyEntry = (body: any): currencyEntry => {
   return validEntry
 }
 
-export default validateCurrencyEntry
+const validateInvestmentEntry = (body: any): investmentEntry => {
+  const validEntry: investmentEntry = {
+    cost: validFieldNumber(body.cost, 'cost'),
+    bought: validFieldNumber(body.bought, 'bought'),
+    currency: validFieldNumber(body.currency, 'currency')
+  }
+  return validEntry
+}
+
+export {
+  validateCurrencyEntry,
+  validateInvestmentEntry,
+  validFieldNumber
+}

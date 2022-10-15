@@ -1,5 +1,6 @@
 import express from 'express'
 import * as investmentsServices from '../services/investments'
+import { validateInvestmentEntry, validFieldNumber } from '../utils'
 
 const router = express.Router()
 
@@ -8,8 +9,26 @@ router.get('/', (_, res) => {
   res.send(investements)
 })
 
-router.post('/', (_, res) => {
-  res.send('recieved')
+router.post('/', (req, res) => {
+  try {
+    const investementEntry = validateInvestmentEntry(req.body)
+    const investmentAdded = investmentsServices.addInvestment(investementEntry)
+    res.send(investmentAdded)
+  } catch (e) {
+    const { message } = e as Error
+    res.status(400).send(message)
+  }
+})
+
+router.delete('/:id', (req, res) => {
+  try {
+    const id = validFieldNumber(Number(req.params.id), 'id')
+    const investmentDeleted = investmentsServices.deleteInvestment(id)
+    res.send(investmentDeleted)
+  } catch (e) {
+    const { message } = e as Error
+    res.status(400).send(message)
+  }
 })
 
 export default router

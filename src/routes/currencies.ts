@@ -1,6 +1,6 @@
 import express from 'express'
 import * as currencyServices from '../services/currencies'
-import validateCurrencyEntry from '../utils'
+import { validateCurrencyEntry } from '../utils'
 
 const router = express.Router()
 
@@ -11,9 +11,8 @@ router.get('/', (_, res) => {
 
 router.post('/', (req, res) => {
   try {
-    // console.log(Array.isArray(req.body.shopping))
     const currencyEntry = validateCurrencyEntry(req.body)
-    const currencyAdded = currencyServices.addCurrencies(currencyEntry)
+    const currencyAdded = currencyServices.addCurrency(currencyEntry)
     res.send(currencyAdded)
   } catch (e) {
     const { message } = e as Error

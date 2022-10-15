@@ -5,9 +5,9 @@ const currencies: iCurrencies[] = currenciesData as iCurrencies[]
 
 export const getAllCurrencies = (): iCurrencies[] => currencies
 
-export const addCurrencies = (currencyEntry: currencyEntry): iCurrencies => {
+export const addCurrency = (currencyEntry: currencyEntry): iCurrencies => {
   const newCurrency: iCurrencies = {
-    id: currencies.length,
+    id: Math.max(...currencies.map(curr => curr.id)) + 1,
     ...currencyEntry
   }
   currencies.push(newCurrency)
