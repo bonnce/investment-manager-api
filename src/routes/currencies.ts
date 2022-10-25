@@ -1,19 +1,21 @@
 import express from 'express'
 import * as currencyServices from '../services/currencies'
-import { validateCurrencyEntry } from '../utils'
+import { validateCurrencyEntry } from '../misc/utils'
 
 const router = express.Router()
 
 router.get('/', (_, res) => {
-  const currencies = currencyServices.getAllCurrencies()
-  res.send(currencies)
+  void currencyServices.getAllCurrencies().then(curr =>
+    res.send(curr)
+  )
 })
 
 router.post('/', (req, res) => {
   try {
     const currencyEntry = validateCurrencyEntry(req.body)
-    const currencyAdded = currencyServices.addCurrency(currencyEntry)
-    res.send(currencyAdded)
+    void currencyServices.addCurrency(currencyEntry).then(curr => {
+      res.send(curr)
+    })
   } catch (e) {
     const { message } = e as Error
     res.status(400).send(message)

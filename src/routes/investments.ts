@@ -1,19 +1,21 @@
 import express from 'express'
 import * as investmentsServices from '../services/investments'
-import { validateInvestmentEntry, validFieldNumber } from '../utils'
+import { validateInvestmentEntry, validFieldNumber } from '../misc/utils'
 
 const router = express.Router()
 
 router.get('/', (_, res) => {
-  const investements = investmentsServices.getAllInvestments()
-  res.send(investements)
+  void investmentsServices.getAllInvestments().then(inv => {
+    res.send(inv)
+  })
 })
 
 router.post('/', (req, res) => {
   try {
-    const investementEntry = validateInvestmentEntry(req.body)
-    const investmentAdded = investmentsServices.addInvestment(investementEntry)
-    res.send(investmentAdded)
+    const investmentEntry = validateInvestmentEntry(req.body)
+    void investmentsServices.addInvestment(investmentEntry).then(inv => {
+      res.send(inv)
+    })
   } catch (e) {
     const { message } = e as Error
     res.status(400).send(message)
@@ -23,8 +25,9 @@ router.post('/', (req, res) => {
 router.delete('/:id', (req, res) => {
   try {
     const id = validFieldNumber(Number(req.params.id), 'id')
-    const investmentDeleted = investmentsServices.deleteInvestment(id)
-    res.send(investmentDeleted)
+    void investmentsServices.deleteInvestment(id).then(inv => {
+      res.send(inv)
+    })
   } catch (e) {
     const { message } = e as Error
     res.status(400).send(message)

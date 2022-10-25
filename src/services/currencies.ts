@@ -1,15 +1,19 @@
+import { CurrencyModel } from '../misc/mongo'
+import { autoIncrement } from '../misc/utils'
 import { currencyEntry, iCurrencies } from '../types'
-import currenciesData from './currenciesJSON.json'
 
-const currencies: iCurrencies[] = currenciesData as iCurrencies[]
+export const getAllCurrencies = async (): Promise<iCurrencies[]> => {
+  const currencies = await CurrencyModel.find()
+  return currencies as iCurrencies[]
+}
 
-export const getAllCurrencies = (): iCurrencies[] => currencies
-
-export const addCurrency = (currencyEntry: currencyEntry): iCurrencies => {
+export const addCurrency = async (currencyEntry: currencyEntry): Promise<iCurrencies> => {
+  const currencies = await getAllCurrencies()
   const newCurrency: iCurrencies = {
-    id: Math.max(...currencies.map(curr => curr.id)) + 1,
+    id: currencies.length > 0 ? autoIncrement(currencies) : 0,
     ...currencyEntry
   }
-  currencies.push(newCurrency)
+  const newCurrencyEntry = new CurrencyModel(newCurrency)
+  await newCurrencyEntry.save()
   return newCurrency
 }

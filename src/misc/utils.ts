@@ -1,4 +1,4 @@
-import { currencyEntry, investmentEntry } from './types'
+import { currencyEntry, iCurrencies, iInvestments, investmentEntry } from '../types'
 
 const isString = (str: string): boolean => typeof str === 'string'
 
@@ -44,8 +44,13 @@ const validateInvestmentEntry = (body: any): investmentEntry => {
   return validEntry
 }
 
+const autoIncrement = (arr: iInvestments[] | iCurrencies[]): number => {
+  return Math.max(...arr.map(i => i.id)) + 1
+}
+
 export {
   validateCurrencyEntry,
   validateInvestmentEntry,
-  validFieldNumber
+  validFieldNumber,
+  autoIncrement
 }
