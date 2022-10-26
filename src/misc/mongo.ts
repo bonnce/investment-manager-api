@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import { iCurrencies, iInvestments } from '../types'
 
 export const connectMongoDB = async (): Promise<undefined> => {
+  console.log(process.env.MONGODB_URISTRING)
   const uri = process.env.MONGODB_URISTRING ?? 'mongodb://Admin:12Jxc@localhost:27017'
   await mongoose.connect(uri)
   console.log('connected')
