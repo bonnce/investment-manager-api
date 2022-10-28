@@ -17,3 +17,20 @@ export const addCurrency = async (currencyEntry: currencyEntry): Promise<iCurren
   await newCurrencyEntry.save()
   return newCurrency
 }
+
+export const updateCurrency = async (currencyEntry: Partial<currencyEntry>, id: number): Promise<iCurrencies> => {
+  try {
+    const currency = await CurrencyModel.findOneAndUpdate({ id }, currencyEntry, { new: true })
+    if (currency === null) throw new Error('Object not found')
+    const newCurrency = {
+      id: currency.id,
+      name: currency.name,
+      shortName: currency.shortName,
+      shopping: currency.shopping
+    }
+    return newCurrency
+  } catch (e) {
+    const { message } = e as Error
+    throw new Error(message)
+  }
+}

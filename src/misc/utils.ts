@@ -1,3 +1,4 @@
+import { Response } from 'express'
 import { currencyEntry, iCurrencies, iInvestments, investmentEntry } from '../types'
 
 const isString = (str: string): boolean => typeof str === 'string'
@@ -5,6 +6,11 @@ const isString = (str: string): boolean => typeof str === 'string'
 const isNumber = (n: number): boolean => typeof n === 'number'
 
 const isArrayOfNum = (arr: number[]): boolean => Array.isArray(arr) && arr.filter(n => !isNumber(n)).length === 0
+
+const validFieldUpdate = <T>(name: any, validation: (name: any) => T): T | undefined => {
+  if (name === undefined) return undefined
+  return validation(name)
+}
 
 const validName = (name: any): string => {
   if (isString(name)) return name
@@ -35,6 +41,15 @@ const validateCurrencyEntry = (body: any): currencyEntry => {
   return validEntry
 }
 
+const validateUpdateCurrency = (body: any): Partial<currencyEntry> => {
+  const validEntry: Partial<currencyEntry> = {
+    name: validFieldUpdate(body.name, validName),
+    shortName: validFieldUpdate(body.shortName, validShortName),
+    shopping: validFieldUpdate(body.shopping, validShopping)
+  }
+  return validEntry
+}
+
 const validateInvestmentEntry = (body: any): investmentEntry => {
   const validEntry: investmentEntry = {
     cost: validFieldNumber(body.cost, 'cost'),
@@ -48,9 +63,16 @@ const autoIncrement = (arr: iInvestments[] | iCurrencies[]): number => {
   return Math.max(...arr.map(i => i.id)) + 1
 }
 
+const handleErrorResponse = (e: unknown, res: Response): void => {
+  const { message } = e as Error
+  res.status(400).send(message)
+}
+
 export {
   validateCurrencyEntry,
   validateInvestmentEntry,
   validFieldNumber,
-  autoIncrement
+  autoIncrement,
+  validateUpdateCurrency,
+  handleErrorResponse
 }

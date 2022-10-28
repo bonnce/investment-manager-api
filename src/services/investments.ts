@@ -20,6 +20,7 @@ export const addInvestment = async (investmentEntry: investmentEntry): Promise<i
 
 export const deleteInvestment = async (id: number): Promise<iInvestments> => {
   const invToDelete = await InvestmentModel.findOne({ id })
+  if (invToDelete === null) throw new Error('Object not found')
   void await InvestmentModel.deleteOne({ id })
   return invToDelete as iInvestments
 }

@@ -5,8 +5,7 @@ FROM node:16-alpine AS builder
 WORKDIR /app
 
 # Install all dependencies
-COPY package*.json ./
-COPY tsconfig.json ./
+COPY package*.json tsconfig.json ./
 RUN npm install
 
 # Copy app source files and build app
@@ -16,7 +15,7 @@ RUN npm run build
 # install pm2 to serve the app
 RUN npm install pm2 -g
 CMD ["pm2-runtime","build/index.js"]
-EXPOSE 3000
+EXPOSE 8080
 # When i learn nginx
 # Nginx image to serve the app
 # FROM nginx:stable-alpine
