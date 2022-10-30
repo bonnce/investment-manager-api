@@ -3,9 +3,8 @@ import { currencyEntry, iCurrencies, iInvestments, investmentEntry } from '../ty
 
 const isString = (str: string): boolean => typeof str === 'string'
 
-const isNumber = (n: number): boolean => typeof n === 'number'
-
-const isArrayOfNum = (arr: number[]): boolean => Array.isArray(arr) && arr.filter(n => !isNumber(n)).length === 0
+const isArrayOfNum = (arr: number[]): boolean => Array.isArray(arr) &&
+arr.filter(n => !(typeof n === 'number')).length === 0
 
 const validFieldUpdate = <T>(name: any, validation: (name: any) => T): T | undefined => {
   if (name === undefined) return undefined
@@ -28,13 +27,17 @@ const validShopping = (shopping: any): number[] => {
 }
 
 const validFieldRequiredNumber = (field: any, fieldName: string): number => {
-  if (isNumber(field)) return field
+  const numField = Number(field)
+  const isNumber = !isNaN(numField)
+  if (isNumber) return numField
   throw new Error(`Invalid type on ${fieldName}, must be number!`)
 }
 
 const validFieldNumber = (field: any, fieldName: string): number|undefined => {
+  const numField = Number(field)
   if (field === undefined) return undefined
-  if (isNumber(field)) return field
+  const isNumber = !isNaN(numField)
+  if (isNumber) return numField
   throw new Error(`Invalid type on ${fieldName}, must be number!`)
 }
 
