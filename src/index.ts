@@ -7,7 +7,7 @@ import cors from 'cors'
 const app = express()
 app.use(express.json())
 
-const PORT = 8081
+const PORT = 8080
 
 const corsOptions = {
   origin: 'http://localhost:3000',
