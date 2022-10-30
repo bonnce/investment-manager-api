@@ -24,3 +24,20 @@ export const deleteInvestment = async (id: number): Promise<iInvestments> => {
   void await InvestmentModel.deleteOne({ id })
   return invToDelete as iInvestments
 }
+
+export const updateInvestments = async (investmentEntry: Partial<investmentEntry>, id: number): Promise<iInvestments> => {
+  try {
+    const shopping = await InvestmentModel.findOneAndUpdate({ id }, investmentEntry, { new: true })
+    if (shopping === null) throw new Error('Object not found')
+    const newInvestment = {
+      id: shopping.id,
+      cost: shopping.cost,
+      bought: shopping.bought,
+      currency: shopping.currency
+    }
+    return newInvestment
+  } catch (e) {
+    const { message } = e as Error
+    throw new Error(message)
+  }
+}

@@ -1,6 +1,6 @@
 import express from 'express'
 import * as currencyServices from '../services/currencies'
-import { handleErrorResponse, validateCurrencyEntry, validateUpdateCurrency, validFieldNumber } from '../misc/utils'
+import { handleErrorResponse, validateCurrencyEntry, validateUpdateCurrency, validFieldRequiredNumber } from '../misc/utils'
 
 const router = express.Router()
 
@@ -21,7 +21,7 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   try {
-    const id = validFieldNumber(Number(req.params.id), 'id')
+    const id = validFieldRequiredNumber(Number(req.params.id), 'id')
     const currencyEntry = validateUpdateCurrency(req.body)
     void currencyServices.updateCurrency(currencyEntry, id).then(curr => {
       res.send(curr)

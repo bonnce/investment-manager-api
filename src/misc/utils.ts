@@ -27,7 +27,13 @@ const validShopping = (shopping: any): number[] => {
   throw new Error('Invalid type on shopping, must be array of numbers!')
 }
 
-const validFieldNumber = (field: any, fieldName: string): number => {
+const validFieldRequiredNumber = (field: any, fieldName: string): number => {
+  if (isNumber(field)) return field
+  throw new Error(`Invalid type on ${fieldName}, must be number!`)
+}
+
+const validFieldNumber = (field: any, fieldName: string): number|undefined => {
+  if (field === undefined) return undefined
   if (isNumber(field)) return field
   throw new Error(`Invalid type on ${fieldName}, must be number!`)
 }
@@ -52,6 +58,15 @@ const validateUpdateCurrency = (body: any): Partial<currencyEntry> => {
 
 const validateInvestmentEntry = (body: any): investmentEntry => {
   const validEntry: investmentEntry = {
+    cost: validFieldRequiredNumber(body.cost, 'cost'),
+    bought: validFieldRequiredNumber(body.bought, 'bought'),
+    currency: validFieldRequiredNumber(body.currency, 'currency')
+  }
+  return validEntry
+}
+
+const validateUpdateInvestment = (body: any): Partial<investmentEntry> => {
+  const validEntry: Partial<investmentEntry> = {
     cost: validFieldNumber(body.cost, 'cost'),
     bought: validFieldNumber(body.bought, 'bought'),
     currency: validFieldNumber(body.currency, 'currency')
@@ -71,8 +86,9 @@ const handleErrorResponse = (e: unknown, res: Response): void => {
 export {
   validateCurrencyEntry,
   validateInvestmentEntry,
-  validFieldNumber,
+  validFieldRequiredNumber,
   autoIncrement,
   validateUpdateCurrency,
-  handleErrorResponse
+  handleErrorResponse,
+  validateUpdateInvestment
 }
