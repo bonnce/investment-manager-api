@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: invm-api
+  labels:
+    app: invm-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: invm-api
+      role: invm-api
+  template:
+    metadata:
+      labels:
+        app: invm-api
+        role: invm-api
+    spec:
+      containers:
+      - name: invm-api
+        image: bonnce/invm-api:1.0.0
+        env:
+        - name: MONGODB_URISTRING
+          value: "mongodb://Admin:12Jxc@mongodb:27017"
+        ports:
+        - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: invm-api
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    role: invm-api
