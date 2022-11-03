@@ -6,15 +6,15 @@ spec:
   rules:
   - http:
       paths:
-      - path: /api
-        pathType: Prefix
+      - path: /*
+        pathType: ImplementationSpecific
         backend:
           service:
             name: invm-api
             port:
               number: 8080
-      - path: /app
-        pathType: Prefix
+      - path: /investment-manager-app/*
+        pathType: ImplementationSpecific
         backend:
           service:
             name: invm-app
