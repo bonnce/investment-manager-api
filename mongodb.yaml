@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mongodb
-  labels:
-    app: mongodb
 spec:
   serviceName: "shopping-list"
   replicas: 1
@@ -20,6 +18,17 @@ spec:
       containers:
       - name: mongodb
         image: mongo:6.0.2
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mysecret
+              key: username
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysecret
+              key: password
         ports:
         - containerPort: 27017
         volumeMounts:
@@ -41,6 +50,8 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+    labels:
+      name: mongodb
   name: mongodb
 spec:
   ports:

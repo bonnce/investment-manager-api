@@ -18,10 +18,22 @@ spec:
     spec:
       containers:
       - name: invm-api
-        image: bonnce/invm-api:1.0.0
+        image: bonnce/invm-api:1.0.2
         env:
+        - name: USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mysecret
+              key: username
+        - name: PASS
+          valueFrom:
+            secretKeyRef:
+              name: mysecret
+              key: password
         - name: MONGODB_URISTRING
-          value: "mongodb://Admin:12Jxc@mongodb:27017"
+          value: "mongodb://$(USERNAME):$(PASS)@mongodb:27017"
+        - name: ORIGIN_CORS
+          value: "http://investment-manager:80"
         ports:
         - containerPort: 8080
 

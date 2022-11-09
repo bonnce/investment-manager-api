@@ -9,13 +9,12 @@ app.use(express.json())
 
 const PORT = 8080
 
-console.log(process.env.MONGODB_URISTRING, 'env')
-const corsOptions = {
-  origin: 'http://localhost:3000',
-  optionsSuccessStatus: 200 // For legacy browser support
-}
+// const corsOptions = {
+//   origin: process.env.ORIGIN_CORS ?? 'http://localhost:3000',
+//   optionsSuccessStatus: 200 // For legacy browser support
+// }
 
-app.use(cors(corsOptions))
+app.use(cors())
 
 connectMongoDB().catch(err => { console.log(err) })
 
