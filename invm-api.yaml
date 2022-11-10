@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: invm-api
-        image: bonnce/invm-api:1.0.2
+        image: bonnce/invm-api:1.0.3
         env:
         - name: USERNAME
           valueFrom:
